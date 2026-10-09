@@ -1,6 +1,4 @@
 
-
-        <!-- Ferramentas Extras de App Premium -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -45,8 +43,9 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
+        /* Modificado para garantir exibição imediata controlada por JS */
         .screen { display: none; }
-        .active { display: block; }
+        .screen.active { display: block !important; }
 
         h1 {
             font-size: 22px;
@@ -113,6 +112,7 @@
             padding: 6px;
             border-radius: 8px;
             width: 50px;
+            color: white;
         }
 
         .mood-btn.selected {
@@ -218,11 +218,11 @@
         <div class="input-group">
             <label>Humor de hoje</label>
             <div class="mood-selector">
-                <button class="mood-btn selected" onclick="selectMood('😊', this)">😊</button>
-                <button class="mood-btn" onclick="selectMood('😢', this)">😢</button>
-                <button class="mood-btn" onclick="selectMood('😡', this)">😡</button>
-                <button class="mood-btn" onclick="selectMood('🤯', this)">🤯</button>
-                <button class="mood-btn" onclick="selectMood('🥰', this)">🥰</button>
+                <button class="mood-btn selected" type="button" onclick="selectMood('😊', this)">😊</button>
+                <button class="mood-btn" type="button" onclick="selectMood('😢', this)">😢</button>
+                <button class="mood-btn" type="button" onclick="selectMood('😡', this)">😡</button>
+                <button class="mood-btn" type="button" onclick="selectMood('🤯', this)">🤯</button>
+                <button class="mood-btn" type="button" onclick="selectMood('🥰', this)">🥰</button>
             </div>
         </div>
 
@@ -248,8 +248,8 @@
         </div>
 
         <div style="margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button class="secondary" style="font-size: 12px; padding: 8px;" onclick="exportBackup()">Backup</button>
-            <button class="secondary danger" style="font-size: 12px; padding: 8px;" onclick="destroyDiary()">Apagar Tudo</button>
+            <button class="secondary" type="button" onclick="exportBackup()">Backup</button>
+            <button class="secondary danger" type="button" onclick="destroyDiary()">Apagar Tudo</button>
         </div>
     </div>
 </div>
@@ -258,15 +258,33 @@
     let currentMood = '😊';
 
     function showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+        // Remove a classe active de todas as telas com segurança
+        const screens = document.querySelectorAll('.screen');
+        for (let i = 0; i < screens.length; i++) {
+            screens[i].classList.remove('active');
+        }
+        // Aplica a classe na tela desejada
+        const target = document.getElementById(screenId);
+        if (target) {
+            target.classList.add('active');
+        }
     }
 
     function init() {
-        if (!localStorage.getItem('secure_diary_pin')) {
+        try {
+            // Se houver resquícios do banco antigo, limpa para evitar loops de travamento
+            if (localStorage.getItem('diary_pin') && !localStorage.getItem('secure_diary_pin')) {
+                localStorage.clear();
+            }
+
+            if (!localStorage.getItem('secure_diary_pin')) {
+                showScreen('screen-setup');
+            } else {
+                showScreen('screen-login');
+            }
+        } catch (e) {
+            // Fallback de segurança: se algo der erro na leitura, força a tela de setup
             showScreen('screen-setup');
-        } else {
-            showScreen('screen-login');
         }
     }
 
@@ -302,19 +320,3 @@
     }
 
     function saveEntry() {
-        const title = document.getElementById('entry-title').value.trim();
-        const content = document.getElementById('entry-content').value.trim();
-        
-        if (!title || !content) {
-            alert('Preencha os campos antes de salvar.');
-            return;
-        }
-
-        const entries = JSON.parse(localStorage.getItem('secure_diary_data')) || [];
-        const date = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-        entries.unshift({ id: Date.now(), title, content, date, time, mood: currentMood });
-        localStorage.setItem('secure_diary_data', JSON.stringify(entries));
-
-        document.getElementById('entry-title').value = '';
