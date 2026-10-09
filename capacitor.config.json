@@ -1,0 +1,6 @@
+{
+  "appId": "com.alencar.meudiario",
+  "appName": "Diário Secreto",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
