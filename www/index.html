@@ -1,4 +1,6 @@
 
+
+        <!-- Ferramentas Extras de App Premium -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,15 +9,12 @@
     <title>Memórias Secretas</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f0c20 0%, #15102a 50%, #060409 100%);
-            --panel-bg: rgba(25, 20, 40, 0.65);
-            --card-bg: rgba(35, 30, 60, 0.5);
-            --border-glow: rgba(142, 68, 173, 0.3);
+            --bg-color: #121214;
+            --panel-bg: #1a1a1e;
+            --card-bg: #26262b;
             --text-main: #ffffff;
-            --text-muted: #a29bfe;
-            --accent-purple: #a855f7;
-            --accent-pink: #ec4899;
-            --accent-green: #10b981;
+            --text-muted: #a1a1aa;
+            --accent-purple: #9333ea;
             --danger: #ef4444;
         }
 
@@ -25,8 +24,8 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient);
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
             padding: 16px;
@@ -37,34 +36,25 @@
         }
 
         .app-container {
-            background: var(--panel-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glow);
-            border-radius: 24px;
+            background-color: var(--panel-bg);
+            border: 1px solid #3f3f46;
+            border-radius: 20px;
             padding: 24px;
             width: 100%;
-            max-width: 480px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            max-width: 440px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        .screen { display: none; animation: fadeIn 0.4s ease-out; }
+        .screen { display: none; }
         .active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             text-align: center;
             margin-top: 0;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, var(--text-main), var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            color: var(--text-main);
         }
 
         .subtitle {
@@ -74,7 +64,6 @@
             margin-bottom: 24px;
         }
 
-        /* Inputs Modernos */
         .input-group {
             margin-bottom: 16px;
             text-align: left;
@@ -84,163 +73,116 @@
             display: block;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             color: var(--text-muted);
             margin-bottom: 6px;
             font-weight: 600;
         }
 
-        input[type="password"], input[type="text"], textarea, select {
+        input[type="password"], input[type="text"], textarea {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            background-color: #09090b;
+            border: 1px solid #52525b;
+            border-radius: 10px;
             padding: 14px;
-            color: white;
+            color: #ffffff;
             font-size: 16px;
-            transition: all 0.3s ease;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus, textarea:focus {
             outline: none;
             border-color: var(--accent-purple);
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
         }
 
-        textarea {
-            height: 150px;
-            resize: none;
-            line-height: 1.5;
-        }
+        textarea { height: 120px; resize: none; }
 
-        /* Grid de Emojis de Humor */
         .mood-selector {
             display: flex;
             justify-content: space-between;
-            background: rgba(0,0,0,0.2);
+            background-color: #09090b;
             padding: 8px;
-            border-radius: 14px;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            border: 1px solid #3f3f46;
         }
 
         .mood-btn {
-            font-size: 24px;
+            font-size: 22px;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 10px;
-            transition: all 0.2s;
-            width: auto;
+            padding: 6px;
+            border-radius: 8px;
+            width: 50px;
         }
 
         .mood-btn.selected {
-            background: var(--accent-purple);
-            transform: scale(1.15);
-            box-shadow: 0 4px 10px rgba(168, 85, 247, 0.4);
+            background-color: var(--accent-purple);
         }
 
-        /* Botões Estilizados */
         button {
             width: 100%;
-            background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);
+            background-color: var(--accent-purple);
             color: white;
             border: none;
             padding: 14px;
-            border-radius: 14px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
             margin-bottom: 12px;
         }
 
-        button:active { transform: scale(0.98); }
-
         button.secondary {
-            background: rgba(255, 255, 255, 0.08);
+            background-color: #27272a;
+            border: 1px solid #3f3f46;
             color: var(--text-main);
-            box-shadow: none;
-            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        button.danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
+        button.danger { background-color: var(--danger); }
 
-        /* Lista de Histórico */
         .entries-section {
             margin-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
+            border-top: 1px solid #3f3f46;
+            padding-top: 16px;
         }
 
         .entries-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
-        .entry-list {
-            max-height: 250px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
+        .entry-list { max-height: 200px; overflow-y: auto; }
 
         .entry-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid #3f3f46;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
             text-align: left;
-            transition: transform 0.2s;
         }
-
-        .entry-card:active { transform: scale(0.99); }
 
         .entry-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .entry-card-title {
-            font-size: 16px;
-            font-weight: 600;
             margin-bottom: 4px;
         }
 
-        .entry-card-text {
-            font-size: 14px;
-            color: #d1d5db;
-            white-space: pre-wrap;
-        }
-
-        .entry-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-            gap: 12px;
-        }
-
-        .action-link {
-            font-size: 13px;
-            color: var(--text-muted);
+        .entry-card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .entry-card-text { font-size: 14px; color: #e4e4e7; }
+        
+        .del-btn {
+            color: var(--danger);
+            font-size: 12px;
             cursor: pointer;
-            text-decoration: none;
+            margin-top: 8px;
+            display: inline-block;
         }
-        .action-link.del { color: var(--danger); }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -248,33 +190,33 @@
 <div class="app-container">
     <!-- TELA 1: Configuração Inicial -->
     <div id="screen-setup" class="screen">
-        <h1>Criar Diário Criptografado</h1>
-        <div class="subtitle">Defina uma senha de acesso para proteger sua privacidade.</div>
+        <h1>Criar Diário Secreto</h1>
+        <div class="subtitle">Defina uma senha para proteger seus textos.</div>
         <div class="input-group">
             <label>Nova Senha (Mínimo 4 dígitos)</label>
-            <input type="password" id="setup-pin" inputmode="numeric" pattern="[0-9]*" placeholder="Ex: 1234">
+            <input type="password" id="setup-pin" inputmode="numeric" placeholder="Ex: 1234">
         </div>
-        <button onclick="setupPassword()">Ativar Proteção Secreta</button>
+        <button onclick="setupPassword()">Ativar Proteção</button>
     </div>
 
     <!-- TELA 2: Login -->
     <div id="screen-login" class="screen">
         <h1>Diário Bloqueado 🔒</h1>
-        <div class="subtitle">Insira suas credenciais para descriptografar os dados.</div>
+        <div class="subtitle">Digite sua senha de acesso.</div>
         <div class="input-group">
             <label>Sua Senha</label>
-            <input type="password" id="login-pin" inputmode="numeric" placeholder="Digite aqui...">
+            <input type="password" id="login-pin" inputmode="numeric" placeholder="Senha...">
         </div>
-        <button onclick="checkPassword()">Desbloquear Espaço</button>
+        <button onclick="checkPassword()">Desbloquear</button>
     </div>
 
     <!-- TELA 3: Painel do Diário -->
     <div id="screen-diary" class="screen">
-        <h1>Meu Espaço Secreto ✍️</h1>
-        <div class="subtitle" id="diary-welcome">Pronto para guardar novas memórias</div>
+        <h1>Meu Espaço ✍️</h1>
+        <div class="subtitle">Guarde seus pensamentos</div>
 
         <div class="input-group">
-            <label>Como você está se sentindo hoje?</label>
+            <label>Humor de hoje</label>
             <div class="mood-selector">
                 <button class="mood-btn selected" onclick="selectMood('😊', this)">😊</button>
                 <button class="mood-btn" onclick="selectMood('😢', this)">😢</button>
@@ -285,25 +227,94 @@
         </div>
 
         <div class="input-group">
-            <label>Título do Relato</label>
-            <input type="text" id="entry-title" placeholder="Um título para este momento...">
+            <label>Título</label>
+            <input type="text" id="entry-title" placeholder="Título...">
         </div>
 
         <div class="input-group">
-            <label>O que está acontecendo?</label>
-            <textarea id="entry-content" placeholder="Querido diário, hoje..."></textarea>
+            <label>Relato</label>
+            <textarea id="entry-content" placeholder="Escreva aqui..."></textarea>
         </div>
 
-        <button onclick="saveEntry()">Garantir Registro Permanente</button>
-        <button class="secondary" onclick="lockDiary()">Trancar Diário Agora 🔑</button>
+        <button onclick="saveEntry()">Salvar no Diário</button>
+        <button class="secondary" onclick="lockDiary()">Trancar Diário 🔑</button>
 
-        <!-- Seção de Histórico Refinada -->
         <div class="entries-section">
             <div class="entries-header">
-                <span style="font-weight: 600; font-size: 14px; color: var(--text-muted);">PÁGINAS SALVAS</span>
-                <span id="entry-count" style="font-size: 12px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px;">0</span>
+                <span>PÁGINAS SALVAS</span>
+                <span id="entry-count">0</span>
             </div>
             <div id="entries" class="entry-list"></div>
         </div>
 
-        <!-- Ferramentas Extras de App Premium -->
+        <div style="margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="secondary" style="font-size: 12px; padding: 8px;" onclick="exportBackup()">Backup</button>
+            <button class="secondary danger" style="font-size: 12px; padding: 8px;" onclick="destroyDiary()">Apagar Tudo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentMood = '😊';
+
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function init() {
+        if (!localStorage.getItem('secure_diary_pin')) {
+            showScreen('screen-setup');
+        } else {
+            showScreen('screen-login');
+        }
+    }
+
+    function setupPassword() {
+        const pin = document.getElementById('setup-pin').value;
+        if (pin.trim().length < 4) {
+            alert('Escolha uma senha de pelo menos 4 caracteres.');
+            return;
+        }
+        localStorage.setItem('secure_diary_pin', btoa(pin));
+        localStorage.setItem('secure_diary_data', JSON.stringify([]));
+        showScreen('screen-diary');
+        loadEntries();
+    }
+
+    function checkPassword() {
+        const inputPin = document.getElementById('login-pin').value;
+        const savedPin = atob(localStorage.getItem('secure_diary_pin'));
+        
+        if (inputPin === savedPin) {
+            showScreen('screen-diary');
+            loadEntries();
+            document.getElementById('login-pin').value = '';
+        } else {
+            alert('Senha incorreta!');
+        }
+    }
+
+    function selectMood(mood, element) {
+        currentMood = mood;
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        element.classList.add('selected');
+    }
+
+    function saveEntry() {
+        const title = document.getElementById('entry-title').value.trim();
+        const content = document.getElementById('entry-content').value.trim();
+        
+        if (!title || !content) {
+            alert('Preencha os campos antes de salvar.');
+            return;
+        }
+
+        const entries = JSON.parse(localStorage.getItem('secure_diary_data')) || [];
+        const date = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        entries.unshift({ id: Date.now(), title, content, date, time, mood: currentMood });
+        localStorage.setItem('secure_diary_data', JSON.stringify(entries));
+
+        document.getElementById('entry-title').value = '';
