@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Secreto</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #120c1f; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: #1d1433; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #3d2b63; }
+        h2 { text-align: center; margin-bottom: 20px; color: #ba9ffb; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #443266; background: #120c1f; color: #fff; font-size: 16px; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 10px; background: #8a5cf5; color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #a37eff; }
+        .hidden { display: none; }
+        .note-card { background: #261b42; padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 5px solid #8a5cf5; }
+        .note-date { font-size: 12px; color: #a37eff; margin-bottom: 5px; }
+        .btn-lock { background: #cf3c3c; margin-top: 20px; }
+        .btn-lock:hover { background: #e55353; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen" class="card">
+        <h2 id="auth-title">Criar Nova Senha</h2>
+        <p id="auth-desc" style="font-size: 14px; color: #aaa; text-align: center; margin-bottom: 15px;">Defina uma senha para proteger suas notas.</p>
+        <input type="password" id="password-input" placeholder="Digite a senha aqui...">
+        <button onclick="handleAuth()">Confirmar</button>
+    </div>
+
+    <div id="app-screen" class="card hidden">
+        <h2>Meu Diário Secreto 🔒</h2>
+        <textarea id="note-input" rows="4" placeholder="Escreva o que está pensando hoje..."></textarea>
+        <button onclick="saveNote()">Salvar Registro</button>
+        
+        <div id="notes-container" style="margin-top: 20px; max-height: 250px; overflow-y: auto;"></div>
+
+        <button onclick="lockApp()" class="btn-lock">Bloquear Diário</button>
+    </div>
+
+    <script>
+        let appPassword = localStorage.getItem('diary_password') || '';
+        let notes = JSON.parse(localStorage.getItem('diary_notes')) || [];
+
+        const authScreen = document.getElementById('auth-screen');
+        const appScreen = document.getElementById('app-screen');
+        const authTitle = document.getElementById('auth-title');
+        const authDesc = document.getElementById('auth-desc');
+
+        if (appPassword) {
+            authTitle.innerText = "Diário Bloqueado";
+            authDesc.innerText = "Insira sua senha secreta para entrar.";
+        }
+
+        function handleAuth() {
+            const input = document.getElementById('password-input').value;
+            if (!appPassword) {
+                if(input.trim() === "") return alert("Digite uma senha válida!");
+                localStorage.setItem('diary_password', input);
+                appPassword = input;
+                alert("Senha criada com sucesso!");
+                showApp();
+            } else {
+                if (input === appPassword) {
+                    showApp();
+                } else {
+                    alert("Senha incorreta! Tente novamente.");
+                }
+            }
+            document.getElementById('password-input').value = '';
+        }
+
+        function showApp() {
+            authScreen.classList.add('hidden');
+            appScreen.classList.remove('hidden');
+            renderNotes();
+        }
+
+        function lockApp() {
+            appScreen.classList.add('hidden');
+            authScreen.classList.remove('hidden');
+            authTitle.innerText = "Diário Bloqueado";
+            authDesc.innerText = "Insira sua senha secreta para entrar.";
+        }
+
+        function saveNote() {
+            const text = document.getElementById('note-input').value;
+            if(text.trim() === "") return alert("Escreva algo antes de salvar!");
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+
+            notes.unshift({ text: text, date: dateStr });
+            localStorage.setItem('diary_notes', JSON.stringify(notes));
+            document.getElementById('note-input').value = '';
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notes-container');
+            container.innerHTML = '';
+            if(notes.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#aaa; font-size:14px;">Nenhum registro ainda.</p>';
+                return;
+            }
+            notes.forEach(note => {
+                const div = document.createElement('div');
+                div.className = 'note-card';
+                div.innerHTML = `<div class="note-date">${note.date}</div><div>${note.text}</div>`;
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
