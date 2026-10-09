@@ -1,0 +1,17 @@
+{
+  "name": "meu-diario-secreto",
+  "version": "1.0.0",
+  "description": "Meu Diário Secreto com Senha",
+  "main": "index.js",
+  "scripts": {    
+    "build": "echo 'No web build step required'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.0",
+    "@capacitor/cli": "^6.0.0"
+  }
+}
