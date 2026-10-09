@@ -1,40 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Memórias Secretas</title>
     <style>
-        :root {
-            --bg-color: #121214;
-            --panel-bg: #1a1a1e;
-            --card-bg: #26262b;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --accent-purple: #9333ea;
-            --danger: #ef4444;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 16px;
+            background-color: #121214;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 16px;
         }
 
         .app-container {
-            background-color: var(--panel-bg);
+            background-color: #1a1a1e;
             border: 1px solid #3f3f46;
             border-radius: 20px;
             padding: 24px;
@@ -43,41 +28,15 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        /* Modificado para garantir exibição imediata controlada por JS */
-        .screen { display: none; }
-        .screen.active { display: block !important; }
+        /* Classes estritas de exibição para forçar o Android */
+        .screen-block { display: none !important; }
+        .screen-block.visible-now { display: block !important; }
 
-        h1 {
-            font-size: 22px;
-            font-weight: 700;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 6px;
-            color: var(--text-main);
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
+        h1 { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 6px; color: #ffffff; }
+        .subtitle { font-size: 14px; color: #a1a1aa; text-align: center; margin-bottom: 24px; }
+        .input-group { margin-bottom: 16px; text-align: left; }
+        label { display: block; font-size: 12px; text-transform: uppercase; color: #a1a1aa; margin-bottom: 6px; font-weight: 600; }
+        
         input[type="password"], input[type="text"], textarea {
             width: 100%;
             background-color: #09090b;
@@ -86,11 +45,6 @@
             padding: 14px;
             color: #ffffff;
             font-size: 16px;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent-purple);
         }
 
         textarea { height: 120px; resize: none; }
@@ -104,24 +58,12 @@
             border: 1px solid #3f3f46;
         }
 
-        .mood-btn {
-            font-size: 22px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 8px;
-            width: 50px;
-            color: white;
-        }
-
-        .mood-btn.selected {
-            background-color: var(--accent-purple);
-        }
+        .mood-btn { font-size: 22px; background: none; border: none; cursor: pointer; padding: 6px; width: 50px; color: white; }
+        .mood-btn.selected { background-color: #9333ea; border-radius: 8px; }
 
         button {
             width: 100%;
-            background-color: var(--accent-purple);
+            background-color: #9333ea;
             color: white;
             border: none;
             padding: 14px;
@@ -132,66 +74,26 @@
             margin-bottom: 12px;
         }
 
-        button.secondary {
-            background-color: #27272a;
-            border: 1px solid #3f3f46;
-            color: var(--text-main);
-        }
+        button.secondary { background-color: #27272a; border: 1px solid #3f3f46; color: #ffffff; }
+        button.danger { background-color: #ef4444; }
 
-        button.danger { background-color: var(--danger); }
-
-        .entries-section {
-            margin-top: 24px;
-            border-top: 1px solid #3f3f46;
-            padding-top: 16px;
-        }
-
-        .entries-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
+        .entries-section { margin-top: 24px; border-top: 1px solid #3f3f46; padding-top: 16px; }
+        .entries-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; color: #a1a1aa; }
         .entry-list { max-height: 200px; overflow-y: auto; }
-
-        .entry-card {
-            background-color: var(--card-bg);
-            border: 1px solid #3f3f46;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            text-align: left;
-        }
-
-        .entry-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
+        .entry-card { background-color: #26262b; border: 1px solid #3f3f46; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .entry-meta { display: flex; justify-content: space-between; font-size: 11px; color: #a1a1aa; margin-bottom: 4px; }
         .entry-card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
         .entry-card-text { font-size: 14px; color: #e4e4e7; }
-        
-        .del-btn {
-            color: var(--danger);
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 8px;
-            display: inline-block;
-        }
+        .del-btn { color: #ef4444; font-size: 12px; cursor: pointer; margin-top: 8px; display: inline-block; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- TELA 1: Configuração Inicial -->
-    <div id="screen-setup" class="screen">
+    <!-- V3 CONFIGURAÇÃO -->
+    <div id="v3-setup" class="screen-block">
         <h1>Criar Diário Secreto</h1>
-        <div class="subtitle">Defina uma senha para proteger seus textos.</div>
+        <div class="subtitle">Defina uma nova senha de acesso.</div>
         <div class="input-group">
             <label>Nova Senha (Mínimo 4 dígitos)</label>
             <input type="password" id="setup-pin" inputmode="numeric" placeholder="Ex: 1234">
@@ -199,10 +101,10 @@
         <button onclick="setupPassword()">Ativar Proteção</button>
     </div>
 
-    <!-- TELA 2: Login -->
-    <div id="screen-login" class="screen">
+    <!-- V3 LOGIN -->
+    <div id="v3-login" class="screen-block">
         <h1>Diário Bloqueado 🔒</h1>
-        <div class="subtitle">Digite sua senha de acesso.</div>
+        <div class="subtitle">Digite sua senha para entrar.</div>
         <div class="input-group">
             <label>Sua Senha</label>
             <input type="password" id="login-pin" inputmode="numeric" placeholder="Senha...">
@@ -210,8 +112,8 @@
         <button onclick="checkPassword()">Desbloquear</button>
     </div>
 
-    <!-- TELA 3: Painel do Diário -->
-    <div id="screen-diary" class="screen">
+    <!-- V3 PAINEL -->
+    <div id="v3-diary" class="screen-block">
         <h1>Meu Espaço ✍️</h1>
         <div class="subtitle">Guarde seus pensamentos</div>
 
@@ -257,55 +159,58 @@
 <script>
     let currentMood = '😊';
 
-    function showScreen(screenId) {
-        // Remove a classe active de todas as telas com segurança
-        const screens = document.querySelectorAll('.screen');
-        for (let i = 0; i < screens.length; i++) {
-            screens[i].classList.remove('active');
-        }
-        // Aplica a classe na tela desejada
-        const target = document.getElementById(screenId);
+    function changeScreen(targetId) {
+        // Remove visibilidade de todos usando seletores diretos
+        document.getElementById('v3-setup').classList.remove('visible-now');
+        document.getElementById('v3-login').classList.remove('visible-now');
+        document.getElementById('v3-diary').classList.remove('visible-now');
+        
+        // Ativa apenas o alvo
+        const target = document.getElementById(targetId);
         if (target) {
-            target.classList.add('active');
+            target.classList.add('visible-now');
         }
     }
 
-    function init() {
+    function coreInit() {
         try {
-            // Se houver resquícios do banco antigo, limpa para evitar loops de travamento
-            if (localStorage.getItem('diary_pin') && !localStorage.getItem('secure_diary_pin')) {
-                localStorage.clear();
+            // Força a limpeza completa de registros de chaves das versões estáveis anteriores
+            if (localStorage.getItem('diary_pin') || localStorage.getItem('secure_diary_pin')) {
+                localStorage.removeItem('diary_pin');
+                localStorage.removeItem('secure_diary_pin');
+                localStorage.removeItem('secure_diary_data');
             }
 
-            if (!localStorage.getItem('secure_diary_pin')) {
-                showScreen('screen-setup');
+            // Nova chave exclusiva da Versão 3
+            if (!localStorage.getItem('v3_master_pin')) {
+                changeScreen('v3-setup');
             } else {
-                showScreen('screen-login');
+                changeScreen('v3-login');
             }
-        } catch (e) {
-            // Fallback de segurança: se algo der erro na leitura, força a tela de setup
-            showScreen('screen-setup');
+        } catch (err) {
+            // Se o motor do celular falhar no localStorage, força renderização imediata do setup
+            changeScreen('v3-setup');
         }
     }
 
     function setupPassword() {
         const pin = document.getElementById('setup-pin').value;
-        if (pin.trim().length < 4) {
+        if (!pin || pin.trim().length < 4) {
             alert('Escolha uma senha de pelo menos 4 caracteres.');
             return;
         }
-        localStorage.setItem('secure_diary_pin', btoa(pin));
-        localStorage.setItem('secure_diary_data', JSON.stringify([]));
-        showScreen('screen-diary');
+        localStorage.setItem('v3_master_pin', btoa(pin));
+        localStorage.setItem('v3_diary_payload', JSON.stringify([]));
+        changeScreen('v3-diary');
         loadEntries();
     }
 
     function checkPassword() {
         const inputPin = document.getElementById('login-pin').value;
-        const savedPin = atob(localStorage.getItem('secure_diary_pin'));
+        const savedPin = atob(localStorage.getItem('v3_master_pin'));
         
         if (inputPin === savedPin) {
-            showScreen('screen-diary');
+            changeScreen('v3-diary');
             loadEntries();
             document.getElementById('login-pin').value = '';
         } else {
@@ -320,3 +225,30 @@
     }
 
     function saveEntry() {
+        const title = document.getElementById('entry-title').value.trim();
+        const content = document.getElementById('entry-content').value.trim();
+        
+        if (!title || !content) {
+            alert('Preencha os campos antes de salvar.');
+            return;
+        }
+
+        const entries = JSON.parse(localStorage.getItem('v3_diary_payload')) || [];
+        const date = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        entries.unshift({ id: Date.now(), title, content, date, time, mood: currentMood });
+        localStorage.setItem('v3_diary_payload', JSON.stringify(entries));
+
+        document.getElementById('entry-title').value = '';
+        document.getElementById('entry-content').value = '';
+        
+        loadEntries();
+    }
+
+    function loadEntries() {
+        const container = document.getElementById('entries');
+        if (!container) return;
+        container.innerHTML = '';
+
+    
