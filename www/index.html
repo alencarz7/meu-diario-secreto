@@ -1,128 +1,309 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diário Secreto</title>
+    <title>Memórias Secretas</title>
     <style>
-        /* Tema focado em acessibilidade: tons de cinza com excelente contraste */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
-        body { background: #1a1a1a; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { background: #2d2d2d; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 2px solid #444444; }
-        h2 { text-align: center; margin-bottom: 20px; color: #ffffff; font-size: 24px; font-weight: bold; }
-        p { font-size: 16px; color: #dddddd; line-height: 1.5; }
-        
-        /* Inputs e Textareas escuros com texto branco nítido e bordas grossas */
-        input, textarea { width: 100%; padding: 14px; margin: 12px 0; border-radius: 8px; border: 2px solid #666666; background: #111111; color: #ffffff; font-size: 18px; }
-        input:focus, textarea:focus { border-color: #ffffff; outline: none; }
-        
-        /* Botões de grande contraste */
-        button { width: 100%; padding: 14px; border: none; border-radius: 8px; background: #e0e0e0; color: #000000; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #ffffff; }
-        .hidden { display: none; }
-        
-        /* Cards das notas salvas */
-        .note-card { background: #383838; padding: 16px; border-radius: 8px; margin-top: 15px; border-left: 6px solid #b0b0b0; border: 1px solid #555555; border-left-width: 6px; }
-        .note-date { font-size: 14px; color: #cccccc; font-weight: bold; margin-bottom: 6px; }
-        .note-text { font-size: 16px; color: #ffffff; word-break: break-word; }
-        
-        .btn-lock { background: #ff4d4d; color: #ffffff; margin-top: 25px; }
-        .btn-lock:hover { background: #ff6666; }
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c20 0%, #15102a 50%, #060409 100%);
+            --panel-bg: rgba(25, 20, 40, 0.65);
+            --card-bg: rgba(35, 30, 60, 0.5);
+            --border-glow: rgba(142, 68, 173, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a29bfe;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-green: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .screen { display: none; animation: fadeIn 0.4s ease-out; }
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, var(--text-main), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Inputs Modernos */
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        input[type="password"], input[type="text"], textarea, select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+        }
+
+        textarea {
+            height: 150px;
+            resize: none;
+            line-height: 1.5;
+        }
+
+        /* Grid de Emojis de Humor */
+        .mood-selector {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+        }
+
+        .mood-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            width: auto;
+        }
+
+        .mood-btn.selected {
+            background: var(--accent-purple);
+            transform: scale(1.15);
+            box-shadow: 0 4px 10px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Botões Estilizados */
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            margin-bottom: 12px;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        button.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            box-shadow: none;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        button.danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Lista de Histórico */
+        .entries-section {
+            margin-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        .entries-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .entry-list {
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .entry-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            text-align: left;
+            transition: transform 0.2s;
+        }
+
+        .entry-card:active { transform: scale(0.99); }
+
+        .entry-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .entry-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .entry-card-text {
+            font-size: 14px;
+            color: #d1d5db;
+            white-space: pre-wrap;
+        }
+
+        .entry-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 12px;
+        }
+
+        .action-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .action-link.del { color: var(--danger); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- TELA DE AUTENTICAÇÃO -->
-    <div id="auth-screen" class="card">
-        <h2 id="auth-title">Criar Nova Senha</h2>
-        <p id="auth-desc" style="text-align: center; margin-bottom: 15px;">Defina uma senha forte para proteger o acesso às suas notas privadas.</p>
-        <input type="password" id="password-input" placeholder="Digite sua senha aqui...">
-        <button onclick="handleAuth()">Confirmar Senha</button>
+<div class="app-container">
+    <!-- TELA 1: Configuração Inicial -->
+    <div id="screen-setup" class="screen">
+        <h1>Criar Diário Criptografado</h1>
+        <div class="subtitle">Defina uma senha de acesso para proteger sua privacidade.</div>
+        <div class="input-group">
+            <label>Nova Senha (Mínimo 4 dígitos)</label>
+            <input type="password" id="setup-pin" inputmode="numeric" pattern="[0-9]*" placeholder="Ex: 1234">
+        </div>
+        <button onclick="setupPassword()">Ativar Proteção Secreta</button>
     </div>
 
-    <!-- PAINEL PRINCIPAL DO DIÁRIO -->
-    <div id="app-screen" class="card hidden">
-        <h2>Meu Diário Secreto 🔒</h2>
-        <textarea id="note-input" rows="4" placeholder="Escreva suas anotações ou pensamentos aqui..."></textarea>
-        <button onclick="saveNote()">Salvar Anotação</button>
-        
-        <div id="notes-container" style="margin-top: 20px; max-height: 300px; overflow-y: auto;"></div>
-
-        <button onclick="lockApp()" class="btn-lock">Bloquear Diário</button>
+    <!-- TELA 2: Login -->
+    <div id="screen-login" class="screen">
+        <h1>Diário Bloqueado 🔒</h1>
+        <div class="subtitle">Insira suas credenciais para descriptografar os dados.</div>
+        <div class="input-group">
+            <label>Sua Senha</label>
+            <input type="password" id="login-pin" inputmode="numeric" placeholder="Digite aqui...">
+        </div>
+        <button onclick="checkPassword()">Desbloquear Espaço</button>
     </div>
 
-    <script>
-        let appPassword = localStorage.getItem('diary_password') || '';
-        let notes = JSON.parse(localStorage.getItem('diary_notes')) || [];
+    <!-- TELA 3: Painel do Diário -->
+    <div id="screen-diary" class="screen">
+        <h1>Meu Espaço Secreto ✍️</h1>
+        <div class="subtitle" id="diary-welcome">Pronto para guardar novas memórias</div>
 
-        const authScreen = document.getElementById('auth-screen');
-        const appScreen = document.getElementById('app-screen');
-        const authTitle = document.getElementById('auth-title');
-        const authDesc = document.getElementById('auth-desc');
+        <div class="input-group">
+            <label>Como você está se sentindo hoje?</label>
+            <div class="mood-selector">
+                <button class="mood-btn selected" onclick="selectMood('😊', this)">😊</button>
+                <button class="mood-btn" onclick="selectMood('😢', this)">😢</button>
+                <button class="mood-btn" onclick="selectMood('😡', this)">😡</button>
+                <button class="mood-btn" onclick="selectMood('🤯', this)">🤯</button>
+                <button class="mood-btn" onclick="selectMood('🥰', this)">🥰</button>
+            </div>
+        </div>
 
-        if (appPassword) {
-            authTitle.innerText = "Diário Bloqueado";
-            authDesc.innerText = "Insira sua senha secreta para visualizar suas notas.";
-        }
+        <div class="input-group">
+            <label>Título do Relato</label>
+            <input type="text" id="entry-title" placeholder="Um título para este momento...">
+        </div>
 
-        function handleAuth() {
-            const input = document.getElementById('password-input').value;
-            if (!appPassword) {
-                if(input.trim() === "") return alert("Por favor, insira uma senha válida!");
-                localStorage.setItem('diary_password', input);
-                appPassword = input;
-                alert("Senha definida com sucesso!");
-                showApp();
-            } else {
-                if (input === appPassword) {
-                    showApp();
-                } else {
-                    alert("Senha incorreta! Tente novamente.");
-                }
-            }
-            document.getElementById('password-input').value = '';
-        }
+        <div class="input-group">
+            <label>O que está acontecendo?</label>
+            <textarea id="entry-content" placeholder="Querido diário, hoje..."></textarea>
+        </div>
 
-        function showApp() {
-            authScreen.classList.add('hidden');
-            appScreen.classList.remove('hidden');
-            renderNotes();
-        }
+        <button onclick="saveEntry()">Garantir Registro Permanente</button>
+        <button class="secondary" onclick="lockDiary()">Trancar Diário Agora 🔑</button>
 
-        function lockApp() {
-            appScreen.classList.add('hidden');
-            authScreen.classList.remove('hidden');
-            authTitle.innerText = "Diário Bloqueado";
-            authDesc.innerText = "Insira sua senha secreta para visualizar suas notas.";
-        }
+        <!-- Seção de Histórico Refinada -->
+        <div class="entries-section">
+            <div class="entries-header">
+                <span style="font-weight: 600; font-size: 14px; color: var(--text-muted);">PÁGINAS SALVAS</span>
+                <span id="entry-count" style="font-size: 12px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 20px;">0</span>
+            </div>
+            <div id="entries" class="entry-list"></div>
+        </div>
 
-        function saveNote() {
-            const text = document.getElementById('note-input').value;
-            if(text.trim() === "") return alert("Não é possível salvar uma nota vazia!");
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-
-            notes.unshift({ text: text, date: dateStr });
-            localStorage.setItem('diary_notes', JSON.stringify(notes));
-            document.getElementById('note-input').value = '';
-            renderNotes();
-        }
-
-        function renderNotes() {
-            const container = document.getElementById('notes-container');
-            container.innerHTML = '';
-            if(notes.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#bbbbbb; font-size:16px; margin-top: 15px;">Nenhuma anotação salva ainda.</p>';
-                return;
-            }
-            notes.forEach(note => {
-                const div = document.createElement('div');
-                div.className = 'note-card';
-                div.innerHTML = `<div class="note-date">${note.date}</div><div class="note-text">${note.text}</div>`;
-                container.appendChild(div);
-            });
-        }
-    </script>
-</body>
-</html>
+        <!-- Ferramentas Extras de App Premium -->
