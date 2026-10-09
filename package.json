@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.0",
-    "@capacitor/cli": "^6.0.0"
+    "@capacitor/cli": "^6.0.0",
+    "jetifier": "^2.0.0"
   }
 }
